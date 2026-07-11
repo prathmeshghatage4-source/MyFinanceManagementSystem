@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -39,8 +40,12 @@ public class ExpenseController {
     }
 
     @GetMapping("")
-    public Page<MyExpense> getAllExpense(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        return expenseService.getAllExpense(page,size);
+    public Page<MyExpense> getAllExpense(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size){
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
+        return expenseService.getAllExpense(email,page,size);
     }
 
     @GetMapping("/{id}")

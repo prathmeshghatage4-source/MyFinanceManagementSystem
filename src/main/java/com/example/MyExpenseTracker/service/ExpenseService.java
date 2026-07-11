@@ -49,11 +49,13 @@ public class ExpenseService {
     }
 
     @Transactional
-    public Page<MyExpense> getAllExpense(int page, int size){
+    public Page<MyExpense> getAllExpense(String email, int page, int size){
+
+        User user = userRepository.findByEmail(email).orElseThrow( () -> new NoSuchElementException("User not found"));
 
         Pageable pageable = PageRequest.of(page,size);
 
-        return myExpenseRepository.findAll(pageable);
+        return myExpenseRepository.findByUserId(user.getId(),pageable);
     }
 
     @Transactional
