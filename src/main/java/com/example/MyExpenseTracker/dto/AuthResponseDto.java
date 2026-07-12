@@ -1,0 +1,17 @@
+package com.example.MyExpenseTracker.dto;
+
+import com.example.MyExpenseTracker.entity.RefreshToken;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class AuthResponseDto {
+
+    private String accessToken;
+    private String refreshToken;
+
+
+}
