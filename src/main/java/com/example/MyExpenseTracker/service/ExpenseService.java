@@ -10,6 +10,8 @@ import com.example.MyExpenseTracker.repository.UserRepository;
 import com.example.MyExpenseTracker.specification.MySpecification;
 import jakarta.transaction.Transactional;
 import lombok.*;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +50,8 @@ public class ExpenseService {
 
     }
 
+    //// Cache all expenses for a user
+    @Cacheable(value = "expenses", key = "#email + '_' + #page + '_' + #size")
     @Transactional
     public Page<MyExpense> getAllExpense(String email, int page, int size){
 
@@ -58,6 +62,8 @@ public class ExpenseService {
         return myExpenseRepository.findByUserId(user.getId(),pageable);
     }
 
+    // once user update the expense remove the old cache from memory
+    @CacheEvict(value = "expenses", allEntries = true)
     @Transactional
     public MyExpense updateExpense( ExpenseRequestDTO dto, Long id){
 
@@ -77,6 +83,7 @@ public class ExpenseService {
         return myExpenseRepository.save(existingexpense);
     }
 
+    @CacheEvict(value = "expenses", allEntries = true)
     public String DeleteExpenseById(Long id){
         myExpenseRepository.deleteById(id);
         return "ID " + id + " has been deleted";
@@ -94,7 +101,7 @@ public class ExpenseService {
         return myExpenseRepository.findByPaymentMethod(paymentMethod);
     }
 
-
+    @CacheEvict(value = "expenses", allEntries = true)
     @Transactional
     public ExpenseResponseDTO addExpense(ExpenseRequestDTO dto){
 
