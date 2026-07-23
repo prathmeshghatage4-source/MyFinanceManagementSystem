@@ -38,7 +38,7 @@ services:
       mysql:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_started[
 
 volumes:
   mysql_data:
