@@ -1,11 +1,11 @@
-# Use Java 21
-FROM eclipse-temurin:21-jdk-alpine
-
-# Set working directory inside container
+# Stage 1: Build the JAR
+FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
+COPY . .
+RUN ./mvnw clean package -DskipTests
 
-# Copy the built jar file into container
-COPY target/*.jar app.jar
-
-# Run the jar
+# Stage 2: Run the JAR
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
