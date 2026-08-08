@@ -119,10 +119,16 @@ public class ExpenseService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (totalSpending.compareTo(BUDGET_THRESHOLD) > 0) {
-            budgetAlertProducer.sendAlert(
-                    "User " + user.getEmail() +
-                            " has exceeded budget threshold! Total spending: ₹" + totalSpending
-            );
+
+            try {
+                budgetAlertProducer.sendAlert(
+                        "User " + user.getEmail() +
+                                " has exceeded budget threshold! Total spending: ₹" + totalSpending
+                );
+            }
+            catch (Exception e){
+                System.out.println("Kafka unavailable, skipping alert: " + e.getMessage());
+            }
         }
 
         // Entity → ResponseDTO
