@@ -112,11 +112,10 @@ public class ExpenseService {
         MyExpense savedExpense = myExpenseRepository.save(expense);
 
         // Check budget threshold
-        BigDecimal totalSpending = myExpenseRepository
-                .findByUserId(user.getId(), Pageable.unpaged())
-                .stream()
-                .map(MyExpense::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalSpending = myExpenseRepository.sumAmountByUserId(user.getId());
+
+        
+        if (totalSpending == null) totalSpending = BigDecimal.ZERO;
 
         if (totalSpending.compareTo(BUDGET_THRESHOLD) > 0) {
 
