@@ -114,7 +114,7 @@ public class ExpenseService {
         // Check budget threshold
         BigDecimal totalSpending = myExpenseRepository.sumAmountByUserId(user.getId());
 
-        
+
         if (totalSpending == null) totalSpending = BigDecimal.ZERO;
 
         if (totalSpending.compareTo(BUDGET_THRESHOLD) > 0) {
