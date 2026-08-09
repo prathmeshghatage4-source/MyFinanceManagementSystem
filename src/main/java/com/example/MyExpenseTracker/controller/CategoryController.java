@@ -33,7 +33,7 @@ public class CategoryController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         return categoryService.getTopCategory(email);
-        
+
     }
 }
 

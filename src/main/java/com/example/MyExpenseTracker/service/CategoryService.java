@@ -2,12 +2,14 @@ package com.example.MyExpenseTracker.service;
 import com.example.MyExpenseTracker.entity.User;
 import com.example.MyExpenseTracker.repository.MyExpenseRepository;
 import com.example.MyExpenseTracker.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CategoryService {
 
     private final MyExpenseRepository myExpenseRepository;
