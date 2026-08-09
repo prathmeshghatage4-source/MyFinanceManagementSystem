@@ -25,4 +25,7 @@ public interface MyExpenseRepository extends JpaRepository<MyExpense, Long>, Jpa
 
     @Query("SELECT SUM(e.amount) FROM MyExpense e WHERE e.user.id = :userId")
     BigDecimal sumAmountByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT e.category, SUM(e.amount) FROM MyExpense e WHERE e.user.id = :userId GROUP BY e.category ORDER BY SUM(e.amount) DESC")
+    List<Object[]> sumByCategory(@Param("userId") Long userId);
 }
