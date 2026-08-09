@@ -19,7 +19,14 @@ public class BudgetAlertProducer {
     }
 
     public void sendAlert(String message) {
-        kafkaTemplate.send(TOPIC, message);
-        System.out.println("Alert sent to Kafka: " + message);
+        // Send asynchronously - don't wait for result
+        kafkaTemplate.send(TOPIC, message)
+                .whenComplete((result, ex) -> {
+                    if (ex != null) {
+                        System.out.println("Kafka unavailable: " + ex.getMessage());
+                    } else {
+                        System.out.println("Alert sent: " + message);
+                    }
+                });
     }
 }
